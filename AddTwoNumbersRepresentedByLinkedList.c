@@ -1,6 +1,9 @@
 #include "stdio.h"
 #include "math.h"
 
+// Adding two numbers represented by linked lists and storing 
+// result in a linked list
+
 struct Node
 {
 	int data;
@@ -8,7 +11,7 @@ struct Node
 };
 
 void traverse(struct Node* head)
-{
+{	//Printing list in backward order
 	if(head==NULL)
 		return;
 	traverse(head->next);
