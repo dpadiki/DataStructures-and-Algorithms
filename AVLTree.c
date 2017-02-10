@@ -218,41 +218,41 @@ int main()
 	root = Insert(root,3);
 
 	/*
-			BST -->		5
-					  /   \
-					 3    10
-					     /  \
-					    6   15
-					       /  \
-					      14   25
-					          /  \
-					         23  30
-							  \   
-							  24   
+            BST -->     5
+                       /   \
+                      3    10
+                         /  \
+                        6   15
+                           /  \
+                          14   25
+                              /  \
+                             23  30
+                              \   
+                              24   
 
 
 
-			AVL TREE -->  	15
-						  /    \	
-						 10     25
-					   /   \   /  \
-					  5    14 23  30
-					/  \       \
-				   3    6      24
+            AVL TREE -->    15
+                          /    \	
+                         10     25
+                       /   \   /  \
+                      5    14 23  30
+                    /  \       \
+                   3    6      24
 	*/
 
 	printf("\nPreorder traversal of tree is : "); preorder(root);
 
 	root = Delete(root,10);
 	/*	
-		After deleting 10
-			AVL TREE -->  	15
-						  /    \	
-						 5     25
-					   /   \   /  \
-					  3    14 23  30
-					   	  /    \
-					   	 6     24
+        After deleting 10
+           AVL TREE -->           15
+                                /    \	
+                               5     25
+                             /   \   /  \
+                            3    14 23  30
+                                /    \
+                               6     24
 					    
 	*/
 	printf("\nPreorder traversal after deleting 10 is : "); preorder(root);
