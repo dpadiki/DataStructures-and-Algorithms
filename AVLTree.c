@@ -126,7 +126,6 @@ struct Node* Delete(struct Node* root,int data)
 			root->right = Delete(root->right,temp->data);
 		}
 	}
-
 	if(root==NULL)
 		return root;
 
