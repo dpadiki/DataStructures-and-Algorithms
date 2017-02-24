@@ -243,14 +243,14 @@ struct Node* RB_insert(struct Node* T,int data)
     return T;
 }
 
-void Inorder(struct Node* root)
+void preorder(struct Node* root)
 {
     if(root==NULL)
         return;
 
-    Inorder(root->left);
     printf("%d ",root->data);
-    Inorder(root->right);
+    preorder(root->left);
+    preorder(root->right);
 }
 
 int main()
@@ -267,8 +267,8 @@ int main()
     RBT = RB_insert(RBT,7);
 
 
-    printf("\nInorder - ");
-    Inorder(RBT);
+    printf("\nPreorder - ");
+    preorder(RBT);
     
     printf("\nLevel order - ");
     levelorder(RBT);
