@@ -91,34 +91,32 @@ void LeftRotate(struct Node** T,struct Node** x)
     struct Node* y = (*x)->right;
     (*x)->right = y->left;
 
-    if((*x)->right!=NULL)
-        (*x)->right->parent = (*x);
+    if(y->left!=NULL)
+        y->left->parent = *x;
 
     y->parent = (*x)->parent;
 
     if((*x)->parent == NULL)
         *T = y;
 
-    else if((*x) == (*x)->parent->left)
+    else if(*x == (*x)->parent->left)
         (*x)->parent->left = y;
 
     else
         (*x)->parent->right = y;
 
-    y->left = (*x);
+    y->left = *x;
 
     (*x)->parent = y;
 
-
 }
-
 void RightRotate(struct Node** T,struct Node** x)
 {
     struct Node* y = (*x)->left;
     (*x)->left = y->right;
 
-    if((*x)->left!=NULL)
-        (*x)->left->parent = (*x);
+    if(y->right!=NULL)
+        y->right->parent = *x;
 
     y->parent = (*x)->parent;
 
