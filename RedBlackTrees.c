@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 //CLRS 
-
 enum type {RED,BLACK};
 
 struct Node
