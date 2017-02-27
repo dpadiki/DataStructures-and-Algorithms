@@ -152,7 +152,7 @@ void RB_insert_fixup(struct Node** T, struct Node** z)
 
             if(uncle!=NULL && uncle->color == RED)
             {
-                grandparent->color = BLACK;
+                grandparent->color = RED;
                 parentpt->color = BLACK;
                 uncle->color = BLACK;
                 *z = grandparent;
@@ -180,7 +180,7 @@ void RB_insert_fixup(struct Node** T, struct Node** z)
 
             if(uncle!=NULL && uncle->color == RED)
             {
-                grandparent->color = BLACK;
+                grandparent->color = RED;
                 parentpt->color = BLACK;
                 uncle->color = BLACK;
                 (*z) = grandparent;
