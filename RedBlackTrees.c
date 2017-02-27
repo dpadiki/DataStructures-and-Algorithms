@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum color {RED,BLACK};
+//CLRS 
+
+enum type {RED,BLACK};
 
 struct Node
 {
@@ -9,7 +11,7 @@ struct Node
     struct Node* left;
     struct Node* right;
     struct Node* parent;
-    int color; 
+    enum type color;
 };
 
 struct Queue
@@ -156,13 +158,13 @@ void RB_insert_fixup(struct Node** T, struct Node** z)
                 *z = grandparent;
             }
 
-            else 
-            {   
+            else
+            {
                 if((*z) == parentpt->right)
                 {
                     LeftRotate(T,&parentpt);
                     (*z) = parentpt;
-                    parentpt = (*z)->parent; 
+                    parentpt = (*z)->parent;
                 }
 
                 RightRotate(T,&grandparent);
@@ -184,13 +186,13 @@ void RB_insert_fixup(struct Node** T, struct Node** z)
                 (*z) = grandparent;
             }
 
-            else 
-            {   
+            else
+            {
                 if((*z) == parentpt->left)
                 {
                     RightRotate(T,&parentpt);
                     (*z) = parentpt;
-                    parentpt = (*z)->parent; 
+                    parentpt = (*z)->parent;
                 }
 
                 LeftRotate(T,&grandparent);
@@ -251,6 +253,167 @@ void preorder(struct Node* root)
     preorder(root->right);
 }
 
+struct Node* Tree_minimum(struct Node* node)
+{
+    while(node->left!=NULL)
+        node = node->left;
+
+    return node;
+}
+
+void RB_delete_fixup(struct Node** T, struct Node** x)
+{
+    while((*x)!=*T && (*x)->color == BLACK)
+    {
+        if((*x)==(*x)->parent->left)
+        {
+            struct Node* w = (*x)->parent->right;
+
+            if(w->color==RED)
+            {
+                w->color = BLACK;
+                (*x)->parent->color = BLACK;
+                LeftRotate(T,&((*x)->parent));
+                w = (*x)->parent->right;
+            }
+
+            if(w->left->color==BLACK && w->right->color == BLACK)
+            {
+                w->color = RED;
+                (*x) = (*x)->parent;
+            }
+
+            else
+            {
+                if(w->right->color == BLACK)
+                {
+                    w->left->color = BLACK;
+                    w->color = RED;
+                    RightRotate(T,&w);
+                    w = (*x)->parent->right;
+                }
+
+                w->color = (*x)->parent->color;
+                (*x)->parent->color = BLACK;
+                w->right->color = BLACK;
+                LeftRotate(T,&((*x)->parent));
+                (*x) = *T;
+            }
+        }
+
+        else
+        {
+            struct Node* w = (*x)->parent->left;
+
+            if(w->color==RED)
+            {
+                w->color = BLACK;
+                (*x)->parent->color = BLACK;
+                RightRotate(T,&((*x)->parent));
+                w = (*x)->parent->left;
+            }
+
+            if(w->right->color==BLACK && w->left->color == BLACK)
+            {
+                w->color = RED;
+                (*x) = (*x)->parent;
+            }
+
+            else
+            {
+                if(w->left->color == BLACK)
+                {
+                    w->right->color = BLACK;
+                    w->color = RED;
+                    LeftRotate(T,&w);
+                    w = (*x)->parent->left;
+                }
+
+                w->color = (*x)->parent->color;
+                (*x)->parent->color = BLACK;
+                w->left->color = BLACK;
+                RightRotate(T,&((*x)->parent));
+                (*x) = *T;
+            }
+        }
+    }
+    (*x)->color = BLACK;
+
+}
+
+void RB_transplat(struct Node** T, struct Node** u,struct Node** v)
+{
+    if((*u)->parent == NULL)
+        *T = *v;
+
+    else if((*u)==(*u)->parent->left)
+        (*u)->parent->left = *v;
+    else
+        (*u)->parent->right = *v;
+
+    if((*v)!=NULL) 
+        (*v)->parent = (*u)->parent;
+}
+
+struct Node* RB_delete(struct Node *T,struct Node* z)
+{
+    struct Node *y = z;
+    enum type yoc;
+    yoc = z->color; // y's original color
+
+    struct Node* x;
+
+    if(z->left==NULL )
+    {
+        x = z->right;
+        RB_transplat(&T,&z,&(z->right));
+    }
+
+    else if(z->right==NULL )
+    {
+        x = z->left;
+        RB_transplat(&T,&z,&(z->left));
+    }
+
+    else
+    {
+        y = Tree_minimum(z->right);
+        yoc = y->color;
+        x = y->right;
+
+        if(y->parent==z)
+            x->parent = y;
+
+        else
+        {
+            RB_transplat(&T,&y,&(y->right));
+            y->right = z->right;
+            y->right->parent = y;
+        }
+
+        RB_transplat(&T,&z,&y);
+        y->left = z->left;
+        y->left->parent = y;
+        y->color = z->color;
+    }
+
+    if(yoc==BLACK)
+        RB_delete_fixup(&T,&x);
+
+    return T;
+}
+
+struct Node* BST_search(struct Node* root, int x)
+{
+    if(root==NULL || root->data == x)
+        return root;
+
+    if(root->data > x)
+       return  BST_search(root->left,x);
+    else
+        return BST_search(root->right,x);
+}
+
 int main()
 {
     struct Node* RBT = NULL;
@@ -264,12 +427,25 @@ int main()
     RBT = RB_insert(RBT,6);
     RBT = RB_insert(RBT,7);
 
+    printf("\nPreorder - ");
+    preorder(RBT);
+
+    printf("\nLevel order - ");
+    levelorder(RBT);
+
+    struct Node* x = BST_search(RBT,5);
+
+    RBT = RB_delete(RBT,x);
+
+    printf("\nAfter deleting 5");
 
     printf("\nPreorder - ");
     preorder(RBT);
-    
+
+    front = NULL; rear = NULL; // Delete old Queue
+
     printf("\nLevel order - ");
     levelorder(RBT);
-    
+
     return 0;
 }
