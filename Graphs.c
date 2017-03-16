@@ -1,69 +1,120 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Graph 
-{
-	int v;
-	struct AdjList* array;
-};
-
 struct AdjListNode
 {
 	int dest;
 	struct AdjListNode* next;
 };
 
+struct Queue
+{
+	int data;
+	struct Queue* next;
+};
+struct Queue *front,*rear = NULL;
+
 struct AdjList
 {
-	struct AdjListNode* head;
+	struct AdjListNode *head;
 };
 
-struct Graph* Creategraph(int v)
+struct Graph
 {
-	struct Graph* new = (struct Graph*)malloc(sizeof(struct Graph));
-	new->array = (struct AdjList*)malloc(sizeof(struct AdjList)*v);
-	new->v = v;
+	int v;
+	struct AdjList* array;
+	
+};
 
-	int i;
+int pfront()
+{
+	if(front==NULL)
+		return NULL;
 
-	for(i=0;i<v;i++)
-		new->array[i].head = NULL;
+	return front->data;
+}
+
+int isempty()
+{
+	if(front==NULL)
+		return 1;
+
+	else
+		return 0;
+}
+
+void dequeue()
+{
+	if(isempty())
+		return;
+
+	struct Queue* temp = front;
+	front = front->next;
+
+	free(temp);
+}
+
+void enqueue(int data)
+{
+	struct Queue* temp = (struct Queue*)malloc(sizeof(struct Queue));
+	temp->data = data;
+	temp->next =NULL;
+
+	if(isempty())
+	{
+		front = rear = temp;
+	}
+
+	else
+	{
+		rear->next = temp;
+		rear = temp;
+	}
+}
+
+struct AdjListNode* newAdjListNode(int dest)
+{
+	struct AdjListNode* new = (struct AdjListNode*)malloc(sizeof(struct AdjListNode));
+	new->dest = dest;
+	new->next = NULL;
 
 	return new;
 }
 
-struct AdjListNode* NewAdjListNode(int dest)
-{
-	struct AdjListNode* temp = (struct AdjListNode*)malloc(sizeof(struct AdjListNode));
-	temp->dest = dest;
-	temp->next = NULL;
 
-	return temp;
+struct Graph* createGrpah(int v)
+{
+	struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+	graph->v = v;
+	graph->array = (struct AdjList*)malloc(sizeof(struct AdjList)*v);
+
+	int i;
+	for(i=0;i<v;i++)
+		graph->array[i].head = NULL;
+
+	return graph;
+
 }
 
 void addEdge(struct Graph* graph, int src, int dest)
 {
-	struct AdjListNode* new = NewAdjListNode(dest);
-	new->next = graph->array[src].head;
-	graph->array[src].head = new;
+	struct AdjListNode* newNode = newAdjListNode(dest);
+	newNode->next = graph->array[src].head;
+	graph->array[src].head = newNode;
 
-	//As it is an undirected graph.. Add an edge from dest to src.
-	struct AdjListNode* new2 = NewAdjListNode(src);
-	new2->next = graph->array[dest].head;
-	graph->array[dest].head = new2;
-
+	newNode = newAdjListNode(src);
+	newNode->next = graph->array[dest].head;
+	graph->array[dest].head = newNode;
 }
 
 void printGraph(struct Graph* graph)
 {
-	int i;
-
-	for(i=0;i<graph->v;i++)
+	int v;
+	for(v=0; v < graph->v;v++)
 	{
-		struct AdjListNode* crawl = graph->array[i].head;
-
-		printf("Neighbours of %d are ",i);
-		while(crawl!=NULL)
+		struct AdjListNode* crawl = graph->array[v].head;
+		printf("Adjacency list of vertex %d\nhead",v);
+		while(crawl)
 		{
 			printf("-> %d",crawl->dest);
 			crawl = crawl->next;
@@ -72,11 +123,42 @@ void printGraph(struct Graph* graph)
 	}
 }
 
+void BFS(struct Graph* graph,int s)//Breadth First Traversal
+{
+	int i;
+	struct AdjListNode* crawl;
+	int *visited = (int *)malloc(sizeof(int)*graph->v);
+
+	for(i=0;i<graph->v;i++)
+		visited[i] = 0;
+
+	visited[s] = 1;
+	enqueue(s);
+
+	while(!isempty())
+	{
+
+		s = pfront();
+		printf("%d ",s);
+		dequeue();
+
+		for(crawl=graph->array[s].head;crawl;crawl = crawl->next)
+		{
+			if(!visited[crawl->dest])
+			{
+				visited[crawl->dest] = 1;
+				enqueue(crawl->dest);
+			}
+		}
+	}
+}
+
 
 int main()
 {
-	struct Graph* graph = Creategraph(5);
+	int v=5;
 
+	struct Graph* graph = createGrpah(v);
 	addEdge(graph, 0, 1);
 	addEdge(graph, 0, 4);
 	addEdge(graph, 1, 2);
@@ -85,6 +167,10 @@ int main()
 	addEdge(graph, 2, 3);
 	addEdge(graph, 3, 4);
 
-	printGraph(graph);	
+	printGraph(graph);
+
+	printf("\nBreadth First Traversal starting from 0 \n");
+	BFS(graph,0);
+	
 	return 0;
 }
