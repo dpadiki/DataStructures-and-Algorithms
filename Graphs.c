@@ -26,52 +26,6 @@ struct Graph
 	
 };
 
-int pfront()
-{
-	if(front==NULL)
-		return NULL;
-
-	return front->data;
-}
-
-int isempty()
-{
-	if(front==NULL)
-		return 1;
-
-	else
-		return 0;
-}
-
-void dequeue()
-{
-	if(isempty())
-		return;
-
-	struct Queue* temp = front;
-	front = front->next;
-
-	free(temp);
-}
-
-void enqueue(int data)
-{
-	struct Queue* temp = (struct Queue*)malloc(sizeof(struct Queue));
-	temp->data = data;
-	temp->next =NULL;
-
-	if(isempty())
-	{
-		front = rear = temp;
-	}
-
-	else
-	{
-		rear->next = temp;
-		rear = temp;
-	}
-}
-
 struct AdjListNode* newAdjListNode(int dest)
 {
 	struct AdjListNode* new = (struct AdjListNode*)malloc(sizeof(struct AdjListNode));
@@ -123,37 +77,6 @@ void printGraph(struct Graph* graph)
 	}
 }
 
-void BFS(struct Graph* graph,int s)//Breadth First Traversal
-{
-	int i;
-	struct AdjListNode* crawl;
-	int *visited = (int *)malloc(sizeof(int)*graph->v);
-
-	for(i=0;i<graph->v;i++)
-		visited[i] = 0;
-
-	visited[s] = 1;
-	enqueue(s);
-
-	while(!isempty())
-	{
-
-		s = pfront();
-		printf("%d ",s);
-		dequeue();
-
-		for(crawl=graph->array[s].head;crawl;crawl = crawl->next)
-		{
-			if(!visited[crawl->dest])
-			{
-				visited[crawl->dest] = 1;
-				enqueue(crawl->dest);
-			}
-		}
-	}
-}
-
-
 int main()
 {
 	int v=5;
@@ -168,9 +91,5 @@ int main()
 	addEdge(graph, 3, 4);
 
 	printGraph(graph);
-
-	printf("\nBreadth First Traversal starting from 0 \n");
-	BFS(graph,0);
-	
 	return 0;
 }
