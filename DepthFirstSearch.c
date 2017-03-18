@@ -80,12 +80,12 @@ int main()
 	struct Graph* graph = Creategraph(5);
 
 	addEdge(graph, 0, 1);
-    addEdge(graph, 0, 4);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 1, 3);
-    addEdge(graph, 1, 4);
-    addEdge(graph, 2, 3);
-    addEdge(graph, 3, 4);
+	addEdge(graph, 0, 4);
+	addEdge(graph, 1, 2);
+	addEdge(graph, 1, 3);
+	addEdge(graph, 1, 4);
+	addEdge(graph, 2, 3);
+	addEdge(graph, 3, 4);
 
 	printf("Depth First Traversal staring from 0\n");
 	DFS(graph,0);
