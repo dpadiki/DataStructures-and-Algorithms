@@ -88,7 +88,6 @@ void MST_kruskal(struct Graph* graph)
 		subsets[i].rank = 0;
 	}
 	i = 0;
-
 	// As in a minimum spanning tree no of edged are n-1.
 	while(e < v-1)
 	{
