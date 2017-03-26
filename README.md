@@ -1,7 +1,7 @@
 # DataStructures and Algorithms in C/C++
 
 This code is written by Amit Bansal while learning Data structures and algorithms.
-
+References GFG, NPTEL, CLRS.
 This repository contains:
 
 1.Singly Linked List.
