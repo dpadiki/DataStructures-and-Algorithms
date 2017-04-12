@@ -80,3 +80,4 @@ This repository contains:
 ----------------
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.Activity Selection Problem.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.Kruskal’s Minimum Spanning Tree Algorithm  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.Dijkstra's algorithm for single source shortest paths  
