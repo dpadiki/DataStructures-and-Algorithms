@@ -250,7 +250,7 @@ int main()
 
 	/*
 	Output
-	
+
 	Vertex   distance from Source   Path
 	0 		4   		1->0
 	1 		0   		1
@@ -262,5 +262,6 @@ int main()
 	7 		11   		1->7
 	8 		10   		1->2->8
 
+	*/
 	return 0;
 }
