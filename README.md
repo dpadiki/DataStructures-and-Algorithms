@@ -1,5 +1,8 @@
 # DataStructures and Algorithms in C/C++
 
+This is repository is now moved to https://github.com/amitbansal7/Data-Structures-and-Algorithms
+====================================================================================================
+
 This code is written by Amit Bansal while learning Data structures and algorithms.  
 References GFG, NPTEL, CLRS.  
 
